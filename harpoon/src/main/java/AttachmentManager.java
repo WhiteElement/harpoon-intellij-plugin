@@ -2,6 +2,7 @@ import com.ibm.icu.impl.Pair;
 import com.intellij.openapi.components.Service;
 import com.intellij.openapi.vfs.VirtualFile;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -22,6 +23,9 @@ public final class AttachmentManager {
     
     public void appendFile(VirtualFile file) throws Exception {
       int idx = firstNotEmptyIdx();
+      
+      if(Arrays.asList(attachedFiles).contains(file))
+          return;
       
       if(idx != -1) {
           attachedFiles[idx] = file;
