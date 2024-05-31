@@ -9,6 +9,6 @@ public class openDialog extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
         var mgr = ApplicationManager.getApplication().getService(AttachmentManager.class);
-       Messages.showMessageDialog( String.format("ATTACHED FILES:\n%s", mgr.toString()), "Harpoon", Messages.getInformationIcon()) ;
+       Messages.showMessageDialog( String.format("ATTACHED FILES:\n%s", mgr.toString(anActionEvent.getProject().getBasePath())), "Harpoon", Messages.getInformationIcon()) ;
     }
 }

@@ -1,3 +1,4 @@
+import com.ibm.icu.impl.Pair;
 import com.intellij.openapi.components.Service;
 import com.intellij.openapi.vfs.VirtualFile;
 
@@ -43,12 +44,40 @@ public final class AttachmentManager {
        return -1;
    }
 
-    public String toString() {
+    public String toString(String projectBasePath) {
        var sb = new StringBuilder();
-       
-       for(var af : attachedFiles){
-           sb.append(af);
-            sb.append("\n");
+      
+       // "1. "
+       for(int i=0 ; i < attachedFiles.length; i++){
+           sb.append(i+1);
+           sb.append(". ");
+           
+           // "---"
+           if(attachedFiles[i] == null) {
+               sb.append("---\n");
+               continue;
+           }
+           
+           // Path from absoulte -> project relative
+           String filePath = attachedFiles[i].getPath();
+           if (projectBasePath != null && filePath.startsWith(projectBasePath)) {
+               filePath = filePath.substring(projectBasePath.length() + 1);
+           }
+           
+           String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
+           filePath = filePath.replace(fileName, "");
+               
+           // <em>src/main</em>
+           sb.append("<em>");
+           sb.append(filePath);
+           sb.append("</em>");
+           
+           // <b>module.xml</b>
+           sb.append("<b>");
+           sb.append(fileName);
+           sb.append("</b>");
+           
+           sb.append("\n");
        }
        
        return sb.toString();
