@@ -62,7 +62,7 @@ public final class AttachmentManager {
                continue;
            }
            
-           // Path from absoulte -> project relative
+           // Path from absolute -> project relative
            String filePath = attachedFiles[i].getPath();
            if (projectBasePath != null && filePath.startsWith(projectBasePath)) {
                filePath = filePath.substring(projectBasePath.length() + 1);

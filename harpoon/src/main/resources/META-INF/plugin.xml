@@ -1,0 +1,64 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+  <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+  <id>org.whiteelement.harpoon</id>
+
+  <!-- Public plugin name should be written in Title Case.
+       Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+  <name>Harpoon</name>
+
+  <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+  <vendor email="support@yourcompany.com" url="https://www.yourcompany.com">YourCompany</vendor>
+
+  <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+       Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+       Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+  <description><![CDATA[
+    Enter short description for your plugin here.<br>
+    <em>most HTML tags may be used</em>
+  ]]></description>
+
+  <!-- Product and plugin compatibility requirements.
+       Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+  <depends>com.intellij.modules.platform</depends>
+
+  <!-- Extension points defined by the plugin.
+       Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+  <extensions defaultExtensionNs="com.intellij">
+  </extensions>
+  
+  <actions>
+
+    <action
+            id="org.intellij.sdk.action.openDialog"
+            class="openDialog"
+            text="Action Basics Plugin: Popup Dialog Action"
+            description="SDK action example">
+    <override-text place="MainMenu" text="Harpoon: show dialog"/>
+      <add-to-group group-id="ToolsMenu" anchor="first"/>
+    <keyboard-shortcut
+            keymap="$default"
+            first-keystroke="ctrl E"/>
+    </action>
+
+    <action
+            id="org.intellij.sdk.action.attachFile"
+            class="attachFile"
+            text="Action Basics Plugin: Popup Dialog Action"
+            description="SDK action example">
+      <override-text place="MainMenu" text="Harpoon: attach File"/>
+      <add-to-group group-id="ToolsMenu" anchor="first"/>
+      <keyboard-shortcut
+              keymap="$default"
+              first-keystroke="ctrl E"/>
+    </action>
+
+    <action id="org.intellij.sdk.action.openFile" class="openFile" text="Open File">
+    <keyboard-shortcut keymap="$default" first-keystroke="ctrl J" />
+    <keyboard-shortcut keymap="$default" first-keystroke="ctrl K" />
+    <keyboard-shortcut keymap="$default" first-keystroke="ctrl L" />
+    <keyboard-shortcut keymap="$default" first-keystroke="ctrl SEMICOLON" />
+    </action>
+    
+  </actions>
+</idea-plugin>

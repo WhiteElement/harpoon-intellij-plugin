@@ -25,22 +25,18 @@ public class openFile extends AnAction {
            
            switch (code) {
                case KeyEvent.VK_J: {
-                   System.out.println("ctrl j");
                    file = mgr.getFile(0);
                    break;
                }
                case KeyEvent.VK_K: {
-                   System.out.println("ctrl k");
                    file = mgr.getFile(1);
                    break;
                }
                case KeyEvent.VK_L: {
-                   System.out.println("ctrl l");
                    file = mgr.getFile(2);
                    break;
                }
                case KeyEvent.VK_SEMICOLON: {
-                   System.out.println("ctrl ;");
                    file = mgr.getFile(3);
                    break;
                }
@@ -48,7 +44,6 @@ public class openFile extends AnAction {
            }
 
            file.ifPresent(virtualFile -> {
-               System.out.println(virtualFile);
                FileEditorManager.getInstance(anActionEvent.getProject()).openFile(virtualFile, true); 
            });
        }
