@@ -1,3 +1,6 @@
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.ApplicationManager;
@@ -13,9 +16,10 @@ public class attachFile extends AnAction {
         
         var files = FileEditorManager.getInstance(proj).getSelectedFiles();
         
-        // No Files selected Message in the future
-        if (files.length == 0) 
+        if (files.length == 0) {
+            Notifications.Bus.notifyAndHide(new Notification("MyGroup","No File selected to attach", NotificationType.WARNING), proj);
             return;
+        };
 
         var mgr = ApplicationManager.getApplication().getService(AttachmentManager.class);
         try {
