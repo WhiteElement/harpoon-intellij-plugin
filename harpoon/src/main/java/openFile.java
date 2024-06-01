@@ -22,7 +22,9 @@ public class openFile extends AnAction {
            var mgr = ApplicationManager.getApplication().getService(AttachmentManager.class);
 
            Optional<VirtualFile> file = Optional.empty();
-           
+
+           System.out.println("Key event: " + keyEvent);
+           System.out.println("key code: " + code);
            switch (code) {
                case KeyEvent.VK_J: {
                    file = mgr.getFile(0);
@@ -44,6 +46,7 @@ public class openFile extends AnAction {
            }
 
            file.ifPresent(virtualFile -> {
+               System.out.println("File to open: " + virtualFile);
                FileEditorManager.getInstance(anActionEvent.getProject()).openFile(virtualFile, true); 
            });
        }

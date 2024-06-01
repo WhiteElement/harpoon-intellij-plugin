@@ -32,8 +32,7 @@
     <action
             id="org.intellij.sdk.action.openDialog"
             class="openDialog"
-            text="Action Basics Plugin: Popup Dialog Action"
-            description="SDK action example">
+            text="Harpoon: open Dialog">
     <override-text place="MainMenu" text="Harpoon: show dialog"/>
       <add-to-group group-id="ToolsMenu" anchor="first"/>
     <keyboard-shortcut
@@ -44,19 +43,18 @@
     <action
             id="org.intellij.sdk.action.attachFile"
             class="attachFile"
-            text="Action Basics Plugin: Popup Dialog Action"
-            description="SDK action example">
+            text="Harpoon: attach File">
       <override-text place="MainMenu" text="Harpoon: attach File"/>
       <add-to-group group-id="ToolsMenu" anchor="first"/>
       <keyboard-shortcut
               keymap="$default"
-              first-keystroke="ctrl E"/>
+              first-keystroke="ctrl A"/>
     </action>
 
     <action id="org.intellij.sdk.action.openFile" class="openFile" text="Open File">
     <keyboard-shortcut keymap="$default" first-keystroke="ctrl J" />
     <keyboard-shortcut keymap="$default" first-keystroke="ctrl K" />
-    <keyboard-shortcut keymap="$default" first-keystroke="ctrl L" />
+    <keyboard-shortcut keymap="$default" first-keystroke="ctrl l" />
     <keyboard-shortcut keymap="$default" first-keystroke="ctrl SEMICOLON" />
     </action>
     
