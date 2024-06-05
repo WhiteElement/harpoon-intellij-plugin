@@ -9,18 +9,13 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 public class openDialog extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
         var mgr = ApplicationManager.getApplication().getService(AttachmentManager.class);
-       //Messages.showMessageDialog( String.format("ATTACHED FILES:\n%s", mgr.toString(anActionEvent.getProject().getBasePath())), "Harpoon",
-        //        Messages.getInformationIcon()) ;
-        
-
-
         
         var model = new DefaultTableModel(4, 1) {
             @Override
@@ -29,24 +24,78 @@ public class openDialog extends AnAction {
             }
         };
 
-        JTable table = new JTable(model);
+        JTable table = new JBTable(model);
+
+        var inputmap = table.getInputMap(JComponent.WHEN_FOCUSED);
+        var actionmap = table.getActionMap();
+
+        inputmap.put(KeyStroke.getKeyStroke(KeyEvent.VK_J, 0), "NextRow");
+        actionmap.put("NextRow", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                var idx = table.getSelectedRow();
+                if (idx < 3) {
+                    idx++;
+                    table.setRowSelectionInterval(idx, idx);
+                }
+            }
+        });
         
-        // TODO insert files into table
-        table.setValueAt("test1", 0, 0);
-        table.setValueAt("test2", 1, 0);
-        table.setValueAt("test3", 2, 0);
-        table.setValueAt("test4", 3, 0);
+        inputmap.put(KeyStroke.getKeyStroke(KeyEvent.VK_K, 0), "PrevRow");
+        actionmap.put("PrevRow", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                var idx = table.getSelectedRow();
+                if (idx > 0) {
+                    idx--;
+                    table.setRowSelectionInterval(idx, idx);
+                }
+            }
+        });
+
 
         var parentFrame = WindowManager.getInstance().getFrame(anActionEvent.getProject());
-        // Create the dialog containing the table
         JDialog dialog = new JDialog(parentFrame, "Table Dialog", true);
+        
+        inputmap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0), "Quit");
+        actionmap.put("Quit", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.setVisible(false);
+            }
+        });
+
+        inputmap.put(KeyStroke.getKeyStroke('d'), "StartDD");
+        actionmap.put("StartDD", new AbstractAction() {
+            private int dCount = 0;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dCount++;
+                if (dCount == 2) {
+                    dCount = 0;
+                    int selectedRow = table.getSelectedRow();
+                    mgr.getFiles()[selectedRow] = null;
+                    table.setValueAt(String.format("%s null",selectedRow + 1), selectedRow, 0);
+                }
+            }
+        }); 
+        
+        var files = mgr.getFiles();
+        mgr.setProjectPath(anActionEvent.getProject().getBasePath());
+        table.setValueAt("1 " + mgr.formatFile(files[0]), 0, 0);
+        table.setValueAt("2 " + mgr.formatFile(files[1]), 1, 0);
+        table.setValueAt("3 " + mgr.formatFile(files[2]), 2, 0);
+        table.setValueAt("4 " + mgr.formatFile(files[3]), 3, 0);
+        table.setRowSelectionInterval(0,0);
+
+        
         dialog.setLayout(new BorderLayout());
         dialog.add(new JScrollPane(table), BorderLayout.CENTER);
         dialog.setSize(300, 150);
         dialog.setLocationRelativeTo(parentFrame); // Center relative to the parent frame
 
-        // Display the dialog
         dialog.setVisible(true);
+        
     } 
     
 }

@@ -24,19 +24,19 @@ public class openFile extends AnAction {
            Optional<VirtualFile> file = Optional.empty();
 
            switch (code) {
-               case KeyEvent.VK_J: {
+               case KeyEvent.VK_H: {
                    file = mgr.getFile(0);
                    break;
                }
-               case KeyEvent.VK_K: {
+               case KeyEvent.VK_J: {
                    file = mgr.getFile(1);
                    break;
                }
-               case KeyEvent.VK_L: {
+               case KeyEvent.VK_K: {
                    file = mgr.getFile(2);
                    break;
                }
-               case KeyEvent.VK_SEMICOLON: {
+               case KeyEvent.VK_L: {
                    file = mgr.getFile(3);
                    break;
                }

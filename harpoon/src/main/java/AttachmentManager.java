@@ -1,4 +1,3 @@
-import com.ibm.icu.impl.Pair;
 import com.intellij.openapi.components.Service;
 import com.intellij.openapi.vfs.VirtualFile;
 
@@ -8,8 +7,9 @@ import java.util.Optional;
 @Service
 public final class AttachmentManager {
     private final VirtualFile[] attachedFiles = new VirtualFile[4];
-    
-   public Optional<VirtualFile> getFile(int idx) {
+    private String basePath;
+
+    public Optional<VirtualFile> getFile(int idx) {
         try {
             return Optional.ofNullable(attachedFiles[idx]);
         } catch (Exception e) {
@@ -48,44 +48,6 @@ public final class AttachmentManager {
        return -1;
    }
 
-    public String toString(String projectBasePath) {
-       var sb = new StringBuilder();
-      
-       // "1. "
-       for(int i=0 ; i < attachedFiles.length; i++){
-           sb.append(i+1);
-           sb.append(". ");
-           
-           // "---"
-           if(attachedFiles[i] == null) {
-               sb.append("---\n");
-               continue;
-           }
-           
-           // Path from absolute -> project relative
-           String filePath = attachedFiles[i].getPath();
-           if (projectBasePath != null && filePath.startsWith(projectBasePath)) {
-               filePath = filePath.substring(projectBasePath.length() + 1);
-           }
-           
-           String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
-           filePath = filePath.replace(fileName, "");
-               
-           // <em>src/main</em>
-           sb.append("<em>");
-           sb.append(filePath);
-           sb.append("</em>");
-           
-           // <b>module.xml</b>
-           sb.append("<b>");
-           sb.append(fileName);
-           sb.append("</b>");
-           
-           sb.append("\n");
-       }
-       
-       return sb.toString();
-    }
     
    private boolean spotIsEmpty (int idx) {
        try {
@@ -96,4 +58,28 @@ public final class AttachmentManager {
        }
        return true;
    }
+
+    public VirtualFile[] getFiles() {
+       return attachedFiles;
+    }
+
+    public String formatFile(VirtualFile file) {
+        
+        if (file == null)
+            return "null";
+        
+        String filePath = file.getPath();
+        if (this.basePath != null && filePath.startsWith(basePath)) {
+            filePath = filePath.substring(basePath.length() + 1);
+        }
+
+        String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
+        filePath = filePath.replace(fileName, "");
+        
+        return filePath + fileName;
+    }
+
+    public void setProjectPath(String basePath) {
+       this.basePath = basePath;
+    }
 }

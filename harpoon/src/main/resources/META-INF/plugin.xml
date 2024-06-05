@@ -48,14 +48,14 @@
       <add-to-group group-id="ToolsMenu" anchor="first"/>
       <keyboard-shortcut
               keymap="$default"
-              first-keystroke="ctrl A"/>
+              first-keystroke="ctrl a"/>
     </action>
 
     <action id="org.intellij.sdk.action.openFile" class="openFile" text="Open File">
+    <keyboard-shortcut keymap="$default" first-keystroke="ctrl H" />
     <keyboard-shortcut keymap="$default" first-keystroke="ctrl J" />
     <keyboard-shortcut keymap="$default" first-keystroke="ctrl K" />
     <keyboard-shortcut keymap="$default" first-keystroke="ctrl l" />
-    <keyboard-shortcut keymap="$default" first-keystroke="ctrl SEMICOLON" />
     </action>
     
   </actions>
