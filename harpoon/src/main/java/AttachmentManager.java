@@ -7,6 +7,7 @@ import java.util.Optional;
 @Service
 public final class AttachmentManager {
     private final VirtualFile[] attachedFiles = new VirtualFile[4];
+    private VirtualFile cachedFile = null;
     private String basePath;
 
     public Optional<VirtualFile> getFile(int idx) {
@@ -17,8 +18,9 @@ public final class AttachmentManager {
         }
    }
    
-    public void setFile(VirtualFile file) {
-       
+    public VirtualFile setCachedFileAt(int idx) {
+       this.attachedFiles[idx] = this.cachedFile;
+       return this.cachedFile;
     } 
     
     public void appendFile(VirtualFile file) throws Exception {
@@ -81,5 +83,13 @@ public final class AttachmentManager {
 
     public void setProjectPath(String basePath) {
        this.basePath = basePath;
+    }
+
+    public void setCachedFile(int selectedRow) {
+       this.cachedFile = attachedFiles[selectedRow];
+    }
+    
+    public Optional<VirtualFile> getCachedFile() {
+        return Optional.ofNullable(this.cachedFile);
     }
 }

@@ -63,7 +63,7 @@ public class openDialog extends AnAction {
         actionmap.put("Quit", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dialog.setVisible(false);
+                dialog.dispose();
             }
         });
 
@@ -76,11 +76,22 @@ public class openDialog extends AnAction {
                 if (dCount == 2) {
                     dCount = 0;
                     int selectedRow = table.getSelectedRow();
+                    mgr.setCachedFile(selectedRow);
                     mgr.getFiles()[selectedRow] = null;
                     table.setValueAt(String.format("%s null",selectedRow + 1), selectedRow, 0);
                 }
             }
         }); 
+        
+        inputmap.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, 0), "PasteFile");
+        actionmap.put("PasteFile", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+                var cachedFile = mgr.setCachedFileAt(selectedRow);
+                table.setValueAt(String.format("%s %s", selectedRow +1, mgr.formatFile(cachedFile)), selectedRow, 0);
+            }
+        });
         
         var files = mgr.getFiles();
         mgr.setProjectPath(anActionEvent.getProject().getBasePath());
