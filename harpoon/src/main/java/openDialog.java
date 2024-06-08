@@ -22,15 +22,18 @@ public class openDialog extends AnAction {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
+            
         };
 
         JTable table = new JBTable(model);
+        table.setTableHeader(null);
+        // .setEnabled()
 
         var inputmap = table.getInputMap(JComponent.WHEN_FOCUSED);
         var actionmap = table.getActionMap();
 
         inputmap.put(KeyStroke.getKeyStroke(KeyEvent.VK_J, 0), "NextRow");
-        actionmap.put("NextRow", new AbstractAction() {
+    actionmap.put("NextRow", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 var idx = table.getSelectedRow();
@@ -55,7 +58,7 @@ public class openDialog extends AnAction {
 
 
         var parentFrame = WindowManager.getInstance().getFrame(anActionEvent.getProject());
-        JDialog dialog = new JDialog(parentFrame, "Table Dialog", true);
+        JDialog dialog = new JDialog(parentFrame, "Attached Files", true);
         
         inputmap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0), "Quit");
         actionmap.put("Quit", new AbstractAction() {
@@ -95,7 +98,6 @@ public class openDialog extends AnAction {
         dialog.setLocationRelativeTo(parentFrame); // Center relative to the parent frame
 
         dialog.setVisible(true);
-        
     } 
     
 }
