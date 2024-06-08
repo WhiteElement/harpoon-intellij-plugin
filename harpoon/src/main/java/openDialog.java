@@ -27,7 +27,6 @@ public class openDialog extends AnAction {
 
         JTable table = new JBTable(model);
         table.setTableHeader(null);
-        // .setEnabled()
 
         var inputmap = table.getInputMap(JComponent.WHEN_FOCUSED);
         var actionmap = table.getActionMap();
