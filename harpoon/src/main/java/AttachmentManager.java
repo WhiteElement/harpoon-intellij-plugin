@@ -50,23 +50,11 @@ public final class AttachmentManager {
        return -1;
    }
 
-    
-   private boolean spotIsEmpty (int idx) {
-       try {
-           var file = attachedFiles[idx];
-           if (file != null) return false;
-       } catch (Exception e) {
-           return true;
-       }
-       return true;
-   }
-
     public VirtualFile[] getFiles() {
        return attachedFiles;
     }
 
     public String formatFile(VirtualFile file) {
-        
         if (file == null)
             return "null";
         
@@ -87,9 +75,5 @@ public final class AttachmentManager {
 
     public void setCachedFile(int selectedRow) {
        this.cachedFile = attachedFiles[selectedRow];
-    }
-    
-    public Optional<VirtualFile> getCachedFile() {
-        return Optional.ofNullable(this.cachedFile);
     }
 }

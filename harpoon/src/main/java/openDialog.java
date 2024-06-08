@@ -32,7 +32,7 @@ public class openDialog extends AnAction {
         var actionmap = table.getActionMap();
 
         inputmap.put(KeyStroke.getKeyStroke(KeyEvent.VK_J, 0), "NextRow");
-    actionmap.put("NextRow", new AbstractAction() {
+        actionmap.put("NextRow", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 var idx = table.getSelectedRow();
@@ -42,7 +42,7 @@ public class openDialog extends AnAction {
                 }
             }
         });
-        
+
         inputmap.put(KeyStroke.getKeyStroke(KeyEvent.VK_K, 0), "PrevRow");
         actionmap.put("PrevRow", new AbstractAction() {
             @Override
@@ -94,7 +94,11 @@ public class openDialog extends AnAction {
         });
         
         var files = mgr.getFiles();
-        mgr.setProjectPath(anActionEvent.getProject().getBasePath());
+        var projectPath = anActionEvent.getProject();
+        if (projectPath == null) {
+           return; 
+        }
+        mgr.setProjectPath(projectPath.getBasePath());
         table.setValueAt("1 " + mgr.formatFile(files[0]), 0, 0);
         table.setValueAt("2 " + mgr.formatFile(files[1]), 1, 0);
         table.setValueAt("3 " + mgr.formatFile(files[2]), 2, 0);
