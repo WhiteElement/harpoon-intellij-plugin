@@ -28,18 +28,6 @@
   </extensions>
   
   <actions>
-
-    <action
-            id="org.intellij.sdk.action.openDialog"
-            class="openDialog"
-            text="Harpoon: open Dialog">
-    <override-text place="MainMenu" text="Harpoon: show dialog"/>
-      <add-to-group group-id="ToolsMenu" anchor="first"/>
-    <keyboard-shortcut
-            keymap="$default"
-            first-keystroke="ctrl E"/>
-    </action>
-
     <action
             id="org.intellij.sdk.action.attachFile"
             class="attachFile"
@@ -50,13 +38,10 @@
               keymap="$default"
               first-keystroke="ctrl a"/>
     </action>
-
-    <action id="org.intellij.sdk.action.openFile" class="openFile" text="Open File">
-    <keyboard-shortcut keymap="$default" first-keystroke="ctrl H" />
-    <keyboard-shortcut keymap="$default" first-keystroke="ctrl J" />
-    <keyboard-shortcut keymap="$default" first-keystroke="ctrl K" />
-    <keyboard-shortcut keymap="$default" first-keystroke="ctrl l" />
-    </action>
-    
   </actions>
+
+  <applicationListeners>
+    <listener class="ControlListener"
+              topic="com.intellij.ide.AppLifecycleListener"/>
+  </applicationListeners>
 </idea-plugin>

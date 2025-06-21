@@ -1,6 +1,9 @@
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.ide.AppLifecycleListener;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.WindowManager;
 import com.intellij.ui.table.JBTable;
 import org.jetbrains.annotations.NotNull;
@@ -10,13 +13,61 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
-public class openDialog extends AnAction {
+public class ControlListener implements AppLifecycleListener {
+
+    private final KeyEventDispatcher dispatcher = new KeyEventDispatcher() {
+        @Override
+        public boolean dispatchKeyEvent(KeyEvent e) {
+            if (e.getID() != KeyEvent.KEY_PRESSED)
+                return false;
+
+            boolean isControlDown = (e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0;
+
+            if (isControlDown && e.getKeyCode() != KeyEvent.VK_CONTROL) {
+                var mgr = ApplicationManager.getApplication().getService(AttachmentManager.class);
+                Optional<VirtualFile> file = Optional.empty();
+
+                switch (e.getExtendedKeyCode()) {
+                    case 69: // E -> open Harpoon Menu
+                        openHarpoon();
+                        break;
+                    case 74: // J -> setFile 1
+                        mgr.getFile(0);
+                        break;
+                    case 75: // K -> setFile 2
+                        mgr.getFile(1);
+                        break;
+                    case 76: // L -> setFile 3
+                        mgr.getFile(2);
+                        break;
+                    case 16777430: // Ö -> setFile 4
+                        mgr.getFile(3);
+                        break;
+                    default:
+                        break;
+                }
+
+                Project currentProject = Arrays.stream(ProjectManager.getInstance().getOpenProjects()).findFirst().orElseThrow();
+                file.ifPresent(virtualFile -> FileEditorManager.getInstance(currentProject).openFile(virtualFile, true));
+            }
+
+            return true;
+        }
+    };
 
     @Override
-    public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
+    public void appFrameCreated(@NotNull List<String> commandLineArgs) {
+        AppLifecycleListener.super.appFrameCreated(commandLineArgs);
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(dispatcher);
+    }
+
+    public void openHarpoon() {
         var mgr = ApplicationManager.getApplication().getService(AttachmentManager.class);
-        
+
         var model = new DefaultTableModel(4, 1) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -29,7 +80,7 @@ public class openDialog extends AnAction {
         var inputmap = table.getInputMap(JComponent.WHEN_FOCUSED);
         var actionmap = table.getActionMap();
 
-        inputmap.put(KeyStroke.getKeyStroke(KeyEvent.VK_J, 0), "NextRow");
+        inputmap.put(KeyStroke.getKeyStroke('j'), "NextRow");
         actionmap.put("NextRow", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -40,8 +91,8 @@ public class openDialog extends AnAction {
                 }
             }
         });
-        
-        inputmap.put(KeyStroke.getKeyStroke(KeyEvent.VK_K, 0), "PrevRow");
+
+        inputmap.put(KeyStroke.getKeyStroke('k'), "PrevRow");
         actionmap.put("PrevRow", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -54,10 +105,10 @@ public class openDialog extends AnAction {
         });
 
 
-        var parentFrame = WindowManager.getInstance().getFrame(anActionEvent.getProject());
+        Project currentProject = Arrays.stream(ProjectManager.getInstance().getOpenProjects()).findFirst().orElseThrow();
+        var parentFrame = WindowManager.getInstance().getFrame(currentProject);
         JDialog dialog = new JDialog(parentFrame, "Table Dialog", true);
-        
-        inputmap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0), "Quit");
+        inputmap.put(KeyStroke.getKeyStroke('q'), "Quit");
         actionmap.put("Quit", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -78,24 +129,23 @@ public class openDialog extends AnAction {
                     table.setValueAt(String.format("%s null",selectedRow + 1), selectedRow, 0);
                 }
             }
-        }); 
-        
+        });
+
         var files = mgr.getFiles();
-        mgr.setProjectPath(anActionEvent.getProject().getBasePath());
+        mgr.setProjectPath(currentProject.getBasePath());
         table.setValueAt("1 " + mgr.formatFile(files[0]), 0, 0);
         table.setValueAt("2 " + mgr.formatFile(files[1]), 1, 0);
         table.setValueAt("3 " + mgr.formatFile(files[2]), 2, 0);
         table.setValueAt("4 " + mgr.formatFile(files[3]), 3, 0);
         table.setRowSelectionInterval(0,0);
 
-        
+
         dialog.setLayout(new BorderLayout());
         dialog.add(new JScrollPane(table), BorderLayout.CENTER);
         dialog.setSize(300, 150);
         dialog.setLocationRelativeTo(parentFrame); // Center relative to the parent frame
 
         dialog.setVisible(true);
-        
-    } 
-    
+
+    }
 }
