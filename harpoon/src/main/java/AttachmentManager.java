@@ -17,10 +17,7 @@ public final class AttachmentManager {
         }
    }
    
-    public void setFile(VirtualFile file) {
-       
-    } 
-    
+
     public void appendFile(VirtualFile file) throws Exception {
       int idx = firstNotEmptyIdx();
       
@@ -48,16 +45,6 @@ public final class AttachmentManager {
        return -1;
    }
 
-    
-   private boolean spotIsEmpty (int idx) {
-       try {
-           var file = attachedFiles[idx];
-           if (file != null) return false;
-       } catch (Exception e) {
-           return true;
-       }
-       return true;
-   }
 
     public VirtualFile[] getFiles() {
        return attachedFiles;
@@ -66,7 +53,7 @@ public final class AttachmentManager {
     public String formatFile(VirtualFile file) {
         
         if (file == null)
-            return "null";
+            return "";
         
         String filePath = file.getPath();
         if (this.basePath != null && filePath.startsWith(basePath)) {

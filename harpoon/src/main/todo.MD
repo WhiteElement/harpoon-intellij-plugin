@@ -1,4 +1,3 @@
-* remove entries in context menu
-* draw Dialog windows new instead of setting it true to false
-** test via tab in and out
+* Expose all Methods for the API to be consumed by .ideavimrc
+* gitignore File
 * deleting a file in context menu should allow to paste it in at another place with p

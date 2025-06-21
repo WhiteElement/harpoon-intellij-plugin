@@ -107,8 +107,11 @@ public class ControlListener implements AppLifecycleListener {
 
 
         Project currentProject = ProjectUtil.getActiveProject();
+        if (currentProject == null)
+            return;
+
         var parentFrame = WindowManager.getInstance().getFrame(currentProject);
-        JDialog dialog = new JDialog(parentFrame, "Table Dialog", true);
+        JDialog dialog = new JDialog(parentFrame, "Harpoon", true);
         dialog.setType(Window.Type.UTILITY); // This hints the window manager not to tile it
         inputmap.put(KeyStroke.getKeyStroke('q'), "Quit");
         actionmap.put("Quit", new AbstractAction() {
@@ -128,13 +131,15 @@ public class ControlListener implements AppLifecycleListener {
                     dCount = 0;
                     int selectedRow = table.getSelectedRow();
                     mgr.getFiles()[selectedRow] = null;
-                    table.setValueAt(String.format("%s null",selectedRow + 1), selectedRow, 0);
+                    table.setValueAt(String.format("%s",selectedRow + 1), selectedRow, 0);
                 }
             }
         });
 
         var files = mgr.getFiles();
+
         mgr.setProjectPath(currentProject.getBasePath());
+        table.setTableHeader(null);
         table.setValueAt("1 " + mgr.formatFile(files[0]), 0, 0);
         table.setValueAt("2 " + mgr.formatFile(files[1]), 1, 0);
         table.setValueAt("3 " + mgr.formatFile(files[2]), 2, 0);
@@ -144,7 +149,7 @@ public class ControlListener implements AppLifecycleListener {
 
         dialog.setLayout(new BorderLayout());
         dialog.add(new JScrollPane(table), BorderLayout.CENTER);
-        dialog.setSize(300, 150);
+        dialog.setSize(600, 150);
         dialog.setLocationRelativeTo(parentFrame); // Center relative to the parent frame
 
         dialog.setVisible(true);

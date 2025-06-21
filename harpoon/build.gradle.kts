@@ -4,8 +4,8 @@ plugins {
   id("org.jetbrains.intellij") version "1.16.0"
 }
 
-group = "org.whiteelement"
-version = "1.0-SNAPSHOT"
+group = "org.braun.whiteelement"
+version = "1.0"
 
 repositories {
   mavenCentral()
@@ -23,16 +23,16 @@ intellij {
 tasks {
   // Set the JVM compatibility versions
   withType<JavaCompile> {
-    sourceCompatibility = "17"
-    targetCompatibility = "17"
+    sourceCompatibility = "11"
+    targetCompatibility = "11"
   }
   withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = "17"
+    kotlinOptions.jvmTarget = "11"
   }
 
   patchPluginXml {
     sinceBuild.set("231")
-    untilBuild.set("250.*")
+    untilBuild.set("400.*")
   }
 
   signPlugin {
