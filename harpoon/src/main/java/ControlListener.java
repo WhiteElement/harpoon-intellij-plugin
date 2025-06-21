@@ -1,4 +1,5 @@
 import com.intellij.ide.AppLifecycleListener;
+import com.intellij.ide.impl.ProjectUtil;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
@@ -105,9 +106,10 @@ public class ControlListener implements AppLifecycleListener {
         });
 
 
-        Project currentProject = Arrays.stream(ProjectManager.getInstance().getOpenProjects()).findFirst().orElseThrow();
+        Project currentProject = ProjectUtil.getActiveProject();
         var parentFrame = WindowManager.getInstance().getFrame(currentProject);
         JDialog dialog = new JDialog(parentFrame, "Table Dialog", true);
+        dialog.setType(Window.Type.UTILITY); // This hints the window manager not to tile it
         inputmap.put(KeyStroke.getKeyStroke('q'), "Quit");
         actionmap.put("Quit", new AbstractAction() {
             @Override
