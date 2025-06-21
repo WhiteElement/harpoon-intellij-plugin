@@ -37,16 +37,16 @@ public class ControlListener implements AppLifecycleListener {
                         openHarpoon();
                         break;
                     case 74: // J -> setFile 1
-                        mgr.getFile(0);
+                        file = mgr.getFile(0);
                         break;
                     case 75: // K -> setFile 2
-                        mgr.getFile(1);
+                        file = mgr.getFile(1);
                         break;
                     case 76: // L -> setFile 3
-                        mgr.getFile(2);
+                        file = mgr.getFile(2);
                         break;
                     case 16777430: // Ö -> setFile 4
-                        mgr.getFile(3);
+                        file = mgr.getFile(3);
                         break;
                     default:
                         break;
