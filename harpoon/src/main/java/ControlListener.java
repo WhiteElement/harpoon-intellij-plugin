@@ -56,7 +56,7 @@ public class ControlListener implements AppLifecycleListener {
                 file.ifPresent(virtualFile -> FileEditorManager.getInstance(currentProject).openFile(virtualFile, true));
             }
 
-            return true;
+            return false;
         }
     };
 
