@@ -52,7 +52,10 @@ public class ControlListener implements AppLifecycleListener {
                         break;
                 }
 
-                Project currentProject = Arrays.stream(ProjectManager.getInstance().getOpenProjects()).findFirst().orElseThrow();
+                Project currentProject = ProjectUtil.getActiveProject();
+                if (currentProject == null)
+                    return false;
+
                 file.ifPresent(virtualFile -> FileEditorManager.getInstance(currentProject).openFile(virtualFile, true));
             }
 
